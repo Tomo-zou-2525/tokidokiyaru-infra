@@ -1,3 +1,4 @@
+# TODO: ドメイン変更
 locals {
   env     = "stg"
   service = "tokidokiyaru"
