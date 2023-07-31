@@ -2,7 +2,7 @@
 locals {
   env     = "stg"
   service = "tokidokiyaru"
-  domain  = "waito-expt.com"
+  domain  = "tokidoki.elevate-passion.cloud"
 }
 
 module "network" {

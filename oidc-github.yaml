@@ -4,7 +4,7 @@ Description: "OIDC for GitHubActions with Broad Access, restricted to specific r
 Parameters:
   RepoName:
     Type: String
-    Default: uekiGityuto/tokidokiyaru-infra
+    Default: Tomo-zou-2525/tokidokiyaru-infra
 
 Resources:
   Role:

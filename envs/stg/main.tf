@@ -9,7 +9,7 @@ terraform {
   }
   backend "s3" {
     # TODO: アカウント名修正
-    bucket         = "stg-terraform-state-428485887053"
+    bucket         = "stg-terraform-state-538916373926"
     key            = "terraform.tfstate"
     region         = "ap-northeast-1"
     encrypt        = true
@@ -21,7 +21,7 @@ provider "aws" {
   region = "ap-northeast-1"
   default_tags {
     tags = {
-      env       = "stg"
+      env       = "prod"
       service   = "tokidokiyaru"
       Terraform = true
     }
