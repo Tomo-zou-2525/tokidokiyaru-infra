@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "OIDC for GitHubActions with Broad Access, restricted to specific repository and branch"
+
+Parameters:
+  RepoName:
+    Type: String
+    Default: Tomo-zou-2525/tokidokiyaru-infra
+
+Resources:
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: tokidokiyaru-github-actions-exec
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: !Ref GithubOidc
+            Condition:
+              StringLike:
+                token.actions.githubusercontent.com:sub: !Sub repo:${RepoName}:*
+
+  Policy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: OIDCforTerraformGitHubActionsBroadAccess
+      Roles:
+        - !Ref Role
+      PolicyDocument:
+        Version: "2012-10-17"
+        # 必要なリソースのみに制限すべき。検証用なので全般許可している
+        Statement:
+          - Effect: Allow
+            Action: "*"
+            Resource: "*"
+          - Effect: Deny
+            Action:
+              - "aws-portal:*"
+              - "account:*"
+            Resource: "*"
+
+  GithubOidc:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList: [sts.amazonaws.com]
+      ThumbprintList:
+        [
+          6938fd4d98bab03faadb97b34396831e3780aea1,
+          1c58a3a8518e8759bf075b76b750d4f2df264fcd,
+        ]
+
+Outputs:
+  Role:
+    Value: !GetAtt Role.Arn
